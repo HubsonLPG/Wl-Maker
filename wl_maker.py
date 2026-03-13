@@ -3,19 +3,10 @@ import glob
 import os
 import time
 
-def save_to_csv():
-    base_name = "WL"
-    ext = ".csv"
-    filename = base_name + ext
-    i = 1
-
-    while os.path.exists(filename):
-        filename = f"{base_name}_{i}{ext}"
-        i += 1
-
-    df.to_csv(filename, sep=';', index=False)
-    return filename
-
+def save_to_csv(raw_name):
+    file_name = raw_name.replace("/", "_")
+    df.to_csv(f'{file_name}.csv', sep=';', index=False)
+    return file_name
 
 class color:
    PURPLE = '\033[95m'
@@ -29,7 +20,11 @@ class color:
    UNDERLINE = '\033[4m'
    END = '\033[0m'
 
-print(f"{color.GREEN}{color.BOLD}\nWitaj kolego, słuchaj się grzecznie poleceń bo inaczej zepsujesz a po co!\n{color.END}")
+gr = color.GREEN
+bd = color.BOLD
+eol = color.END
+
+print(f"{gr}{bd}\nWitaj kolego, słuchaj się grzecznie poleceń bo inaczej zepsujesz a po co!\n{eol}")
 time.sleep(1)
 
 while True:
@@ -42,42 +37,46 @@ while True:
     ind = int(input('Wybierz indeks ścieżki:'))
     path = path[ind]
     df = pd.read_excel(path)
-
 #logika
-    menu_1 = input(f"\nCo chcesz zrobić słodki książe? Jeśli tylko wygenerować CSV z gotowego pliku XLSX wybierz 'q'. Jeśli chcesz uzupełnić zestawienie wyciągnięte z dziekanatu, wybierz 'r'. Jeśli chcesz zamknąć kliknij enter.\n")
+    file_name = str(f'{df['Tok - nazwa'][0]} {df['Grupa - nazwa'][0]} {(df['Prowadzący zajęcia, imię'][0])[0]}{df['Prowadzący zajęcia, nazwisko'][0]}')
+    menu_1 = input(f"\nCo chcesz zrobić słodki książe? Jeśli tylko wygenerować CSV z gotowego pliku XLSX wybierz {gr}{bd}'q'{eol}. Jeśli chcesz uzupełnić zestawienie wyciągnięte z dziekanatu, "
+                   f"wybierz {gr}{bd}'r'{eol}. Jeśli chcesz zamknąć kliknij {gr}{bd}enter{eol}.\n")
     if menu_1.lower() == 'q':
         df = df.loc[:, ['Imię', 'Nazwisko', 'Company', 'e-mail', 'Start Date', 'End Date', 'Timezone ID', 'Trainer']]
         print('zapisuje do csv')
-        save_to_csv()
+
+        save_to_csv(file_name)
 
     elif menu_1.lower() == 'r':
-        start_date = input(f"{color.RED}{color.BOLD}WAŻNE!{color.END} Datę podawaj tylko w formacie yy-mm-dd\npodaj datę startową: ")
-        end_date = input("podaj datę końcową: ")
-        teacher_name = input("podaj imię wykładowcy: ")
-        teacher_surname = input("podaj nazwisko wykładowcy: ")
-        teacher_mail = input("podaj mail wykładowcy: ")
+        teacher_mail = input(f"Wybierz typ maila wykładowcy, {gr}{bd}'q'{eol} dla {(df['Prowadzący zajęcia, imię'][0]).lower()[0]}{df['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl, "
+                             f"{gr}{bd}'r'{eol} dla {(df['Prowadzący zajęcia, imię'][0].lower())}.{df['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl")
+        if teacher_mail.lower() == 'q':
+            teacher_mail = f'{(df['Prowadzący zajęcia, imię'][0]).lower()[0]}{df['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl'
+        elif teacher_mail.lower() == 'r':
+            teacher_mail = f'{(df['Prowadzący zajęcia, imię'][0].lower())}.{df['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl'
+
+
+        df.loc[len(df)] = {
+            'Imię': df['Prowadzący zajęcia, imię'][0],
+            'Nazwisko': df['Prowadzący zajęcia, nazwisko'][0],
+            'e-mail': teacher_mail,
+            }
+        
 
         df['Company'] = 'AWSB'
-        df['Start Date'] = start_date
-        df['End Date'] = end_date
+        df['Start Date'] = pd.Timestamp.now().normalize()
+        df['End Date'] = df['Start Date'] + pd.Timedelta(days=14)
         df['Timezone ID'] = 54
         df['Trainer'] = False
         df = df.loc[:, ['Imię', 'Nazwisko', 'Company', 'e-mail', 'Start Date', 'End Date', 'Timezone ID', 'Trainer']]
-        df.loc[len(df)] = {
-            'Imię': teacher_name,
-            'Nazwisko': teacher_surname,
-            'Company': 'AWSB',
-            'e-mail': teacher_mail,
-            'Start Date': start_date,
-            'End Date': end_date,
-            'Timezone ID': 54,
-            'Trainer': True
-            }
+        df.loc[df.index[-1], 'Trainer'] = True
+
+
         input(f'{df.head()}\n\n{df.tail()}')
-        save_to_csv()
+        save_to_csv(file_name)
     else:
         break
-    action = input(f'\nNo i wariacie co robimy?\nJeśli chcesz ponownie skorzystać wybierz "q". Jeśli chcesz zakończyć program wybierz "r"')
+    action = input(f'\nNo i wariacie co robimy?\nJeśli chcesz ponownie skorzystać wybierz {gr}{bd}"q"{eol}. Jeśli chcesz zakończyć program wybierz {gr}{bd}"r"{eol}')
     if action.lower() == 'r':
         break
     elif action.lower() == 'q':
