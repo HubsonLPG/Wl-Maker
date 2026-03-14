@@ -3,9 +3,12 @@ import glob
 import os
 import time
 
-def save_to_csv(raw_name):
+def save_to_csv(raw_name, df):
     file_name = raw_name.replace("/", "_")
-    df.to_csv(f'{file_name}.csv', sep=';', index=False)
+    os.makedirs("csvki", exist_ok=True)
+    save_path = os.path.join("csvki", f"{file_name}.csv")
+    df.to_csv(save_path, sep=';', index=False)
+    print("\nZapisano plik! ♿")
     return file_name
 
 class color:
@@ -28,32 +31,33 @@ print(f"{gr}{bd}\nWitaj kolego, słuchaj się grzecznie poleceń bo inaczej zeps
 time.sleep(1)
 
 while True:
-    path = glob.glob(os.path.join(os.getcwd(), "*.xlsx"))
+    path = glob.glob(os.path.join(os.getcwd(), "zestawienia", "*.xlsx"))
     list_index = 0
     for item in path:
         print(f'index: {list_index} path: "{item}"')
         list_index += 1
 
-    ind = int(input('Wybierz indeks ścieżki:'))
+    ind = int(input('Wybierz indeks ścieżki:\n'))
     path = path[ind]
     df = pd.read_excel(path)
 #logika
-    file_name = str(f'{df['Tok - nazwa'][0]} {df['Grupa - nazwa'][0]} {(df['Prowadzący zajęcia, imię'][0])[0]}{df['Prowadzący zajęcia, nazwisko'][0]}')
+    file_name = str(f"{df['Tok - nazwa'][0]} {df['Grupa - nazwa'][0]} {(df['Prowadzący zajęcia, imię'][0])[0]}{df['Prowadzący zajęcia, nazwisko'][0]}")
     menu_1 = input(f"\nCo chcesz zrobić słodki książe? Jeśli tylko wygenerować CSV z gotowego pliku XLSX wybierz {gr}{bd}'q'{eol}. Jeśli chcesz uzupełnić zestawienie wyciągnięte z dziekanatu, "
                    f"wybierz {gr}{bd}'r'{eol}. Jeśli chcesz zamknąć kliknij {gr}{bd}enter{eol}.\n")
     if menu_1.lower() == 'q':
         df = df.loc[:, ['Imię', 'Nazwisko', 'Company', 'e-mail', 'Start Date', 'End Date', 'Timezone ID', 'Trainer']]
-        print('zapisuje do csv')
+        print('zapisuje do csv\n')
 
-        save_to_csv(file_name)
+        save_to_csv(file_name, df)
 
     elif menu_1.lower() == 'r':
         teacher_mail = input(f"Wybierz typ maila wykładowcy, {gr}{bd}'q'{eol} dla {(df['Prowadzący zajęcia, imię'][0]).lower()[0]}{df['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl, "
-                             f"{gr}{bd}'r'{eol} dla {(df['Prowadzący zajęcia, imię'][0].lower())}.{df['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl")
+                             f"{gr}{bd}'r'{eol} dla {(df['Prowadzący zajęcia, imię'][0].lower())}.{df['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl."
+                             f"{gr}{bd} Jeśli mail jest niestandardowany, uzupełnij pole: {eol}\n")
         if teacher_mail.lower() == 'q':
-            teacher_mail = f'{(df['Prowadzący zajęcia, imię'][0]).lower()[0]}{df['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl'
+            teacher_mail = f"{(df['Prowadzący zajęcia, imię'][0]).lower()[0]}{df['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl"
         elif teacher_mail.lower() == 'r':
-            teacher_mail = f'{(df['Prowadzący zajęcia, imię'][0].lower())}.{df['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl'
+            teacher_mail = f"{(df['Prowadzący zajęcia, imię'][0].lower())}.{df['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl"
 
 
         df.loc[len(df)] = {
@@ -72,11 +76,11 @@ while True:
         df.loc[df.index[-1], 'Trainer'] = True
 
 
-        input(f'{df.head()}\n\n{df.tail()}')
-        save_to_csv(file_name)
+        input(f'{df.tail()}')
+        save_to_csv(file_name, df)
     else:
         break
-    action = input(f'\nNo i wariacie co robimy?\nJeśli chcesz ponownie skorzystać wybierz {gr}{bd}"q"{eol}. Jeśli chcesz zakończyć program wybierz {gr}{bd}"r"{eol}')
+    action = input(f'\nNo i wariacie co robimy?\nJeśli chcesz ponownie skorzystać wybierz {gr}{bd}"q"{eol}. Jeśli chcesz zakończyć program wybierz {gr}{bd}"r"{eol}\n')
     if action.lower() == 'r':
         break
     elif action.lower() == 'q':
