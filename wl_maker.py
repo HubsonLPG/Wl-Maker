@@ -37,10 +37,8 @@ time.sleep(1)
 
 while True:
     path = glob.glob(os.path.join(os.getcwd(), "zestawienia", "*.xlsx"))
-    list_index = 0
-    for item in path:
-        print(f'index: {list_index} path: "{item}"')
-        list_index += 1
+    for i, item in enumerate(path):
+        print(f'index: {i} plik: "{os.path.basename(item)}"')
 
     ind = int(input("Wybierz indeks ścieżki:\n"))
     path = path[ind]
@@ -113,7 +111,7 @@ while True:
 
             if (
                 input(
-                    f"Sprawdź podsumowanie bratku czy jest okej. jeśli tak, kliknij {gr}{bd}'enter'{eol}. Jeśli nie, wpisz {gr}{bd}'r'{eol}\n\n{df_copy.tail()}\n"
+                    f"Sprawdź podsumowanie bratku czy jest okej. jeśli tak, kliknij {gr}{bd}'enter'{eol}. Jeśli nie, wpisz {gr}{bd}'r'{eol}.\n\n{df_copy.tail()}\n"
                 )
                 == "r"
             ):
@@ -124,7 +122,7 @@ while True:
     else:
         break
     action = input(
-        f"\nNo i wariacie co robimy?\nJeśli chcesz ponownie skorzystać wybierz {gr}{bd}'q'{eol}. Jeśli chcesz zakończyć program wybierz {gr}{bd}'r'{eol}\n"
+        f"\nNo i wariacie co robimy?\nJeśli chcesz ponownie skorzystać wybierz {gr}{bd}'q'{eol}. Jeśli chcesz zakończyć program wybierz {gr}{bd}'r'{eol}.\n"
     )
     if action.lower() == "r":
         break
