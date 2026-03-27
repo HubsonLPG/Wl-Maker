@@ -17,6 +17,7 @@ def save_to_csv(raw_name, df):
 gr = color.GREEN
 bd = color.BOLD
 eol = color.END
+cn = color.DARKCYAN
 
 print(
     f"{gr}{bd}\nWitaj kolego, słuchaj się grzecznie poleceń bo inaczej zepsujesz a po co!\n{eol}"
@@ -63,7 +64,7 @@ while True:
             teacher_mail = input(
                 f"Wybierz typ maila wykładowcy\n{gr}{bd}'q'{eol} - {(df_copy['Prowadzący zajęcia, imię'][0]).lower()[0]}{df_copy['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl\n"
                 f"{gr}{bd}'r'{eol} - {(df_copy['Prowadzący zajęcia, imię'][0].lower())}.{df_copy['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl\n"
-                f"{gr}{bd} Jeśli mail jest niestandardowany, uzupełnij pole: {eol}\n"
+                f"{gr}{bd}Jeśli mail jest niestandardowany, uzupełnij pole: {eol}\n"
             )
             if teacher_mail.lower() == "q":
                 teacher_mail = f"{(df_copy['Prowadzący zajęcia, imię'][0]).lower()[0]}{df_copy['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl"
@@ -99,7 +100,7 @@ while True:
             if (
                 input(
                     f"Sprawdź podsumowanie bratku czy jest okej.\n{gr}{bd}'enter' - okej{eol}\n{gr}{bd}'r' - nie okej{eol}\n"
-                    f"{gr}{bd}ostatni index:{eol} {ind},{gr}{bd} przedmiot:{eol} {df['Przedmiot'][0]}\n\n{df_copy.tail()}\n"
+                    f"\n{cn}{bd}ostatni index:{eol} {ind},{cn}{bd} przedmiot:{eol} {df['Przedmiot'][0]}\n\n{df_copy.tail()}\n"
                 )
                 == "r"
             ):
