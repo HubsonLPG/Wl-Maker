@@ -10,6 +10,7 @@ eol = color.END
 cn = color.DARKCYAN
 lcn = color.CYAN
 bl = color.BLUE
+pr = color.PURPLE
 
 
 def generate_csv(df):
@@ -87,12 +88,17 @@ def merge_tallys_into_csv(df):
         f"enter - zakończenie wybierania{eol}\n"
     )
     while True:
+        print(df_copy.head(len(df_copy)))
         path = glob.glob(os.path.join(os.getcwd(), "zestawienia", "*.xlsx"))
         for i, item in enumerate(path):
             df_sub = pd.read_excel(item)
             print(
                 f'index: {i} plik: "{os.path.basename(item)}" '
-                f"{bd}{cn}\n{df_sub['Tok - nazwa'][0]}{eol} {bd}{gr}{df_sub['Prowadzący zajęcia, nazwisko'][0]}{eol} {bd}{bl}liczba rekordów: {len(df_sub)}{eol}\n")
+                f"{bd}{cn}\n{df_sub['Tok - nazwa'][0]}{eol} "
+                f"{bd}{gr}{df_sub['Prowadzący zajęcia, nazwisko'][0]}{eol} "
+                f"{bd}{bl}liczba rekordów: {len(df_sub)}{eol}"
+                f"{bd}{pr}{df['Przedmiot'][0]}{eol}\n"
+            )
         ind = input("\nWybierz indeks ścieżki:\n")
         time.sleep(0.3)
         if ind != "":

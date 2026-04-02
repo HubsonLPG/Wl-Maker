@@ -12,6 +12,7 @@ eol = color.END
 cn = color.DARKCYAN
 lcn = color.CYAN
 bl = color.BLUE
+pr = color.PURPLE
 
 print(
     f"{gr}{bd}\nWitaj kolego, słuchaj się grzecznie poleceń bo inaczej zepsujesz a po co!\n{eol}"
@@ -25,7 +26,10 @@ while True:
         try:
             print(
                 f'index: {i} plik: "{os.path.basename(item)}" '
-                f"{bd}{cn}\n{df['Tok - nazwa'][0]}{eol} {bd}{gr}{df['Prowadzący zajęcia, nazwisko'][0]}{eol} {bd}{bl}liczba rekordów: {len(df)}{eol}\n"
+                f"{bd}{cn}\n{df['Tok - nazwa'][0]}{eol} "
+                f"{bd}{gr}{df['Prowadzący zajęcia, nazwisko'][0]}{eol} "
+                f"{bd}{bl}liczba rekordów: {len(df)}{eol} "
+                f"{bd}{pr}{df['Przedmiot'][0]}{eol}\n"
             )
         except Exception as e:
             print(
@@ -53,7 +57,7 @@ while True:
         )
         # df_copy = modules_wl_maker.generate_csv(df)
         df_copy = modules_wl.merge_tallys_into_csv(df)
-        df_copy = modules_wl.fill_tally_into_csv(df)
+        df_copy = modules_wl.fill_tally_into_csv(df_copy)
         modules_wl.save_to_csv(file_name, df_copy)
 # --- MENU option 1 ---
 
