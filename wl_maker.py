@@ -6,19 +6,12 @@ from color import color
 import modules_wl
 
 
-def save_to_csv(raw_name, df):
-    file_name = raw_name.replace("/", "_")
-    os.makedirs("csvki", exist_ok=True)
-    save_path = os.path.join("csvki", f"{file_name}.csv")
-    df.to_csv(save_path, sep=";", index=False)
-    print("\nZapisano plik! ♿")
-    return file_name
-
-
 gr = color.GREEN
 bd = color.BOLD
 eol = color.END
 cn = color.DARKCYAN
+lcn = color.CYAN
+bl = color.BLUE
 
 print(
     f"{gr}{bd}\nWitaj kolego, słuchaj się grzecznie poleceń bo inaczej zepsujesz a po co!\n{eol}"
@@ -28,7 +21,16 @@ time.sleep(0.5)
 while True:
     path = glob.glob(os.path.join(os.getcwd(), "zestawienia", "*.xlsx"))
     for i, item in enumerate(path):
-        print(f'index: {i} plik: "{os.path.basename(item)}"')
+        df = pd.read_excel(item)
+        try:
+            print(
+                f'index: {i} plik: "{os.path.basename(item)}" '
+                f"{bd}{cn}\n{df['Tok - nazwa'][0]}{eol} {bd}{gr}{df['Prowadzący zajęcia, nazwisko'][0]}{eol} {bd}{bl}liczba rekordów: {len(df)}{eol}\n"
+            )
+        except Exception as e:
+            print(
+                f'WYSTĄPIŁ BŁĄD W PLIKU {os.path.basename(item)} {e}'
+            )
 
     ind = int(input("\nWybierz indeks ścieżki:\n"))
     time.sleep(0.3)
@@ -52,7 +54,7 @@ while True:
         # df_copy = modules_wl_maker.generate_csv(df)
         df_copy = modules_wl.merge_tallys_into_csv(df)
         df_copy = modules_wl.fill_tally_into_csv(df)
-        save_to_csv(file_name, df_copy)
+        modules_wl.save_to_csv(file_name, df_copy)
 # --- MENU option 1 ---
 
 # --- MENU option 2 ---
@@ -71,7 +73,7 @@ while True:
             ):
                 continue
             else:
-                save_to_csv(file_name, df_copy)
+                modules_wl.save_to_csv(file_name, df_copy)
                 break
 # --- MENU option 2 ---
 

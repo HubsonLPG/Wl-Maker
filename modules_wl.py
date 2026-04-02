@@ -8,6 +8,8 @@ gr = color.GREEN
 bd = color.BOLD
 eol = color.END
 cn = color.DARKCYAN
+lcn = color.CYAN
+bl = color.BLUE
 
 
 def generate_csv(df):
@@ -26,6 +28,15 @@ def generate_csv(df):
         ],
     ]
     return df_copy
+
+
+def save_to_csv(raw_name, df):
+    file_name = raw_name.replace("/", "_")
+    os.makedirs("csvki", exist_ok=True)
+    save_path = os.path.join("csvki", f"{file_name}.csv")
+    df.to_csv(save_path, sep=";", index=False)
+    print("\nZapisano plik! ♿")
+    return file_name
 
 
 def fill_tally_into_csv(df):
@@ -78,7 +89,10 @@ def merge_tallys_into_csv(df):
     while True:
         path = glob.glob(os.path.join(os.getcwd(), "zestawienia", "*.xlsx"))
         for i, item in enumerate(path):
-            print(f'index: {i} plik: "{os.path.basename(item)}"')
+            df_sub = pd.read_excel(item)
+            print(
+                f'index: {i} plik: "{os.path.basename(item)}" '
+                f"{bd}{cn}\n{df_sub['Tok - nazwa'][0]}{eol} {bd}{gr}{df_sub['Prowadzący zajęcia, nazwisko'][0]}{eol} {bd}{bl}liczba rekordów: {len(df_sub)}{eol}\n")
         ind = input("\nWybierz indeks ścieżki:\n")
         time.sleep(0.3)
         if ind != "":
