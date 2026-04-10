@@ -4,7 +4,7 @@ import os
 import time
 from color import color
 import modules_wl
-
+# from anime_baba import print_anime_baba
 
 gr = color.GREEN
 bd = color.BOLD
@@ -14,6 +14,7 @@ lcn = color.CYAN
 bl = color.BLUE
 pr = color.PURPLE
 
+# print_anime_baba()
 print(
     f"{gr}{bd}\nWitaj kolego, słuchaj się grzecznie poleceń bo inaczej zepsujesz a po co!\n{eol}"
 )
@@ -40,6 +41,7 @@ while True:
     time.sleep(0.3)
     path = path[ind]
     df = pd.read_excel(path)
+    df = df.drop_duplicates(subset='e-mail', ignore_index=True)
     file_name = str(
         f"{df['Tok - nazwa'][0]} {df['Grupa - nazwa'][0]} {(df['Prowadzący zajęcia, imię'][0])[0]}{df['Prowadzący zajęcia, nazwisko'][0]}"
     )
@@ -55,7 +57,6 @@ while True:
         file_name = str(
             f"{(df['Prowadzący zajęcia, imię'][0])[0]}{df['Prowadzący zajęcia, nazwisko'][0]}"
         )
-        # df_copy = modules_wl_maker.generate_csv(df)
         df_copy = modules_wl.merge_tallys_into_csv(df)
         df_copy = modules_wl.fill_tally_into_csv(df_copy)
         modules_wl.save_to_csv(file_name, df_copy)

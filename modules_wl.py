@@ -42,6 +42,7 @@ def save_to_csv(raw_name, df):
 
 def fill_tally_into_csv(df):
     df_copy = df.copy()
+    # print(df_copy.head())
     teacher_mail = str(input(
         f"Wybierz typ maila wykładowcy\n{gr}{bd}'1'{eol} - {(df_copy['Prowadzący zajęcia, imię'][0]).lower()[0]}{df_copy['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl\n"
         f"{gr}{bd}'2'{eol} - {(df_copy['Prowadzący zajęcia, imię'][0].lower())}.{df_copy['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl\n"
@@ -88,7 +89,8 @@ def merge_tallys_into_csv(df):
         f"enter - zakończenie wybierania{eol}\n"
     )
     while True:
-        print(df_copy.head(len(df_copy)))
+        time.sleep(0.3)
+        print(f"\n{df_copy.tail()}")
         path = glob.glob(os.path.join(os.getcwd(), "zestawienia", "*.xlsx"))
         for i, item in enumerate(path):
             df_sub = pd.read_excel(item)
@@ -97,7 +99,7 @@ def merge_tallys_into_csv(df):
                 f"{bd}{cn}\n{df_sub['Tok - nazwa'][0]}{eol} "
                 f"{bd}{gr}{df_sub['Prowadzący zajęcia, nazwisko'][0]}{eol} "
                 f"{bd}{bl}liczba rekordów: {len(df_sub)}{eol}"
-                f"{bd}{pr}{df['Przedmiot'][0]}{eol}\n"
+                f"{bd}{pr}{df_sub['Przedmiot'][0]}{eol}\n"
             )
         ind = input("\nWybierz indeks ścieżki:\n")
         time.sleep(0.3)
