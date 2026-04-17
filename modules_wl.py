@@ -38,22 +38,27 @@ def save_to_csv(raw_name, df):
     save_path = os.path.join("csvki", f"{file_name}.csv")
     df.to_csv(save_path, sep=";", index=False)
     print("\nZapisano plik! ♿")
+    time.sleep(0.5)
     return file_name
 
 
 def fill_tally_into_csv(df):
     df_copy = df.copy()
-    # print(df_copy.head())
+    teacher_name = unidecode(df_copy['Prowadzący zajęcia, imię'][0].lower())
+    teacher_surname = unidecode(
+        df_copy['Prowadzący zajęcia, nazwisko'][0].lower())
+
     teacher_mail = str(input(
-        f"Wybierz typ maila wykładowcy\n{gr}{bd}'1'{eol} - {(df_copy['Prowadzący zajęcia, imię'][0]).lower()[0]}{df_copy['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl\n"
-        f"{gr}{bd}'2'{eol} - {(df_copy['Prowadzący zajęcia, imię'][0].lower())}.{df_copy['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl\n"
+        f"Wybierz typ maila wykładowcy\n"
+        f"{gr}{bd}'1'{eol} - {teacher_name[0]}{teacher_surname}@wsb.edu.pl\n"
+        f"{gr}{bd}'2'{eol} - {teacher_name}.{teacher_surname}@wsb.edu.pl\n"
         f"{gr}{bd}Jeśli mail jest niestandardowany, uzupełnij pole: {eol}\n"
     ))
     time.sleep(0.3)
     if teacher_mail.lower() == "1":
-        teacher_mail = f"{(df_copy['Prowadzący zajęcia, imię'][0]).lower()[0]}{df_copy['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl"
+        teacher_mail = f"{teacher_name[0]}{teacher_surname}@wsb.edu.pl"
     elif teacher_mail.lower() == "2":
-        teacher_mail = f"{(df_copy['Prowadzący zajęcia, imię'][0].lower())}.{df_copy['Prowadzący zajęcia, nazwisko'][0].lower()}@wsb.edu.pl"
+        teacher_mail = f"{teacher_name}.{teacher_surname}@wsb.edu.pl"
 
     df_copy.loc[len(df_copy)] = {
         "Imię": df_copy["Prowadzący zajęcia, imię"][0],

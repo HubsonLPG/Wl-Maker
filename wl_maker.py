@@ -5,7 +5,6 @@ import time
 from color import color
 import modules_wl
 
-# from anime_baba import print_anime_baba
 
 gr = color.GREEN
 bd = color.BOLD
@@ -15,7 +14,6 @@ lcn = color.CYAN
 bl = color.BLUE
 pr = color.PURPLE
 
-# print_anime_baba()
 print(
     f"{gr}{bd}\nWitaj kolego, słuchaj się grzecznie poleceń bo inaczej zepsujesz a po co!\n{eol}"
 )
@@ -67,11 +65,13 @@ while True:
     elif menu_1.lower() == "2":
         while True:
             df_copy = modules_wl.fill_tally_into_csv(df)
+            print(f"Sprawdź podsumowanie bratku czy jest okej."
+                  f"\n{gr}{bd}'enter' - okej{eol}"
+                  f"\n{gr}{bd}'1' - nie okej{eol}\n")
+            time.sleep(0.5)
             if (
                 str(input(
-                    f"Sprawdź podsumowanie bratku czy jest okej."
-                    f"\n{gr}{bd}'enter' - okej{eol}"
-                    f"\n{gr}{bd}'1' - nie okej{eol}\n"
+
                     f"\n{cn}{bd}ostatni index:{eol} {ind},{cn}{bd} przedmiot:{eol}"
                     f"{df['Przedmiot'][0]}\n\n{df_copy.tail()}\n"
                 ))
