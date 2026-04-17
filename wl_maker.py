@@ -56,7 +56,7 @@ while True:
         file_name = str(
             f"{(df['Prowadzący zajęcia, imię'][0])[0]}{df['Prowadzący zajęcia, nazwisko'][0]}"
         )
-        df_copy = modules_wl.merge_tallys_into_csv(df)
+        df_copy = modules_wl.merge_tallys_into_csv(df, ind)
         df_copy = modules_wl.fill_tally_into_csv(df_copy)
         modules_wl.save_to_csv(file_name, df_copy)
 # --- MENU option 1 ---
@@ -71,7 +71,6 @@ while True:
             time.sleep(0.5)
             if (
                 str(input(
-
                     f"\n{cn}{bd}ostatni index:{eol} {ind},{cn}{bd} przedmiot:{eol}"
                     f"{df['Przedmiot'][0]}\n\n{df_copy.tail()}\n"
                 ))

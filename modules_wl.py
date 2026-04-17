@@ -85,29 +85,42 @@ def fill_tally_into_csv(df):
         ],
     ]
     df_copy.loc[df_copy.index[-1], "Trainer"] = True
+    print()
     return df_copy
 
 
-def merge_tallys_into_csv(df):
+def merge_tallys_into_csv(df, ind):
     df_copy = df.copy()
-    print(
-        f"{cn}{bd}Wybierz pliki do dołączenia\n"
-        f"enter - zakończenie wybierania{eol}\n"
-    )
+    ind_list = [ind]
+    # print(
+    #     f"{cn}{bd}Wybierz pliki do dołączenia\n"
+    #     f"enter - zakończenie wybierania{eol}"
+    # )
     while True:
         time.sleep(0.3)
-        print(f"\n{df_copy.tail()}")
+        print(f"\n{df_copy.tail()}\n")
         path = glob.glob(os.path.join(os.getcwd(), "zestawienia", "*.xlsx"))
+        time.sleep(0.3)
         for i, item in enumerate(path):
             df_sub = pd.read_excel(item)
-            print(
-                f'index: {i} plik: "{os.path.basename(item)}" '
-                f"{bd}{cn}\n{df_sub['Tok - nazwa'][0]}{eol} "
-                f"{bd}{gr}{df_sub['Prowadzący zajęcia, nazwisko'][0]}{eol} "
-                f"{bd}{bl}liczba rekordów: {len(df_sub)}{eol}"
-                f"{bd}{pr}{df_sub['Przedmiot'][0]}{eol}\n"
-            )
-        ind = input("\nWybierz indeks ścieżki:\n")
+            if i not in ind_list:
+                print(
+                    f'index: {i} plik: "{os.path.basename(item)}" '
+                    f"{bd}{cn}\n{df_sub['Tok - nazwa'][0]}{eol} "
+                    f"{bd}{gr}{df_sub['Prowadzący zajęcia, nazwisko'][0]}{eol} "
+                    f"{bd}{bl}liczba rekordów: {len(df_sub)}{eol} "
+                    f"{bd}{pr}{df_sub['Przedmiot'][0]}{eol}\n"
+                )
+        time.sleep(0.3)
+        print(
+            f"{cn}{bd}Wybierz pliki do dołączenia\n"
+            f"enter - zakończenie wybierania{eol}"
+        )
+        ind = input("Wybierz indeks ścieżki:\n")
+        try:
+            ind_list.append(int(ind))
+        except Exception:
+            ind_list.append(ind)
         time.sleep(0.3)
         if ind != "":
             path = path[int(ind)]
