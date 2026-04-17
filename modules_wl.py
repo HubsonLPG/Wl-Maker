@@ -3,6 +3,7 @@ import pandas as pd
 import glob
 import os
 import time
+from unidecode import unidecode
 
 gr = color.GREEN
 bd = color.BOLD
@@ -57,7 +58,7 @@ def fill_tally_into_csv(df):
     df_copy.loc[len(df_copy)] = {
         "Imię": df_copy["Prowadzący zajęcia, imię"][0],
         "Nazwisko": df_copy["Prowadzący zajęcia, nazwisko"][0],
-        "e-mail": teacher_mail,
+        "e-mail": unidecode(teacher_mail),
     }
 
     df_copy["Company"] = "AWSB"
