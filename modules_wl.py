@@ -85,17 +85,12 @@ def fill_tally_into_csv(df):
         ],
     ]
     df_copy.loc[df_copy.index[-1], "Trainer"] = True
-    print()
     return df_copy
 
 
 def merge_tallys_into_csv(df, ind):
     df_copy = df.copy()
     ind_list = [ind]
-    # print(
-    #     f"{cn}{bd}Wybierz pliki do dołączenia\n"
-    #     f"enter - zakończenie wybierania{eol}"
-    # )
     while True:
         time.sleep(0.3)
         print(f"\n{df_copy.tail()}\n")

@@ -53,12 +53,27 @@ while True:
     time.sleep(0.3)
 # --- MENU option 1 ---
     if menu_1.lower() == "1":
-        file_name = str(
-            f"{(df['Prowadzący zajęcia, imię'][0])[0]}{df['Prowadzący zajęcia, nazwisko'][0]}"
-        )
-        df_copy = modules_wl.merge_tallys_into_csv(df, ind)
-        df_copy = modules_wl.fill_tally_into_csv(df_copy)
-        modules_wl.save_to_csv(file_name, df_copy)
+        while True:
+            file_name = str(
+                f"Łączenie_{(df['Prowadzący zajęcia, imię'][0])[0]}{df['Prowadzący zajęcia, nazwisko'][0]}"
+            )
+            df_copy = modules_wl.merge_tallys_into_csv(df, ind)
+            df_copy = modules_wl.fill_tally_into_csv(df_copy)
+            print(f"Sprawdź podsumowanie bratku czy jest okej."
+                  f"\n{gr}{bd}'enter' - okej{eol}"
+                  f"\n{gr}{bd}'1' - nie okej{eol}\n")
+            time.sleep(0.5)
+            if (
+                str(input(
+                    f"{cn}{bd}ostatni index:{eol} {ind},{cn}{bd} przedmiot:{eol}"
+                    f"{df['Przedmiot'][0]}\n\n{df_copy.tail()}\n"
+                ))
+                == "1"
+            ):
+                continue
+            else:
+                modules_wl.save_to_csv(file_name, df_copy)
+                break
 # --- MENU option 1 ---
 
 # --- MENU option 2 ---
@@ -71,11 +86,12 @@ while True:
             time.sleep(0.5)
             if (
                 str(input(
-                    f"\n{cn}{bd}ostatni index:{eol} {ind},{cn}{bd} przedmiot:{eol}"
+                    f"{cn}{bd}ostatni index:{eol} {ind},{cn}{bd} przedmiot:{eol}"
                     f"{df['Przedmiot'][0]}\n\n{df_copy.tail()}\n"
                 ))
-                == "2"
+                == "1"
             ):
+                time.sleep(0.3)
                 continue
             else:
                 modules_wl.save_to_csv(file_name, df_copy)
