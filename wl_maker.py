@@ -65,7 +65,7 @@ while True:
             time.sleep(0.5)
             if (
                 str(input(
-                    f"{cn}{bd}ostatni index:{eol} {ind},{cn}{bd} przedmiot:{eol}"
+                    f"{cn}{bd}ostatni index:{eol} {ind},{cn}{bd} przedmiot: {eol}"
                     f"{df['Przedmiot'][0]}\n\n{df_copy.tail()}\n"
                 ))
                 == "1"

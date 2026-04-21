@@ -1,0 +1,4 @@
+unidecode
+pandas
+## pyinstaller
+## jeśli będziesz robił plik .exe, odkomentuj pyinstaller

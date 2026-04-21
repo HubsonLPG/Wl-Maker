@@ -65,10 +65,14 @@ def fill_tally_into_csv(df):
         "Nazwisko": df_copy["Prowadzący zajęcia, nazwisko"][0],
         "e-mail": unidecode(teacher_mail),
     }
+    day_num = int(input(
+        "Podaj ile mają trwać laboratoria w dniach\n"
+    ))
+    time.sleep(0.3)
 
     df_copy["Company"] = "AWSB"
     df_copy["Start Date"] = pd.Timestamp.now().normalize()
-    df_copy["End Date"] = df_copy["Start Date"] + pd.Timedelta(days=14)
+    df_copy["End Date"] = df_copy["Start Date"] + pd.Timedelta(days=day_num)
     df_copy["Timezone ID"] = 54
     df_copy["Trainer"] = False
     df_copy = df_copy.loc[
