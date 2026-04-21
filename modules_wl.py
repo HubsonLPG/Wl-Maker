@@ -129,3 +129,21 @@ def merge_tallys_into_csv(df, ind):
         else:
             break
     return df_copy
+
+
+def summary(df_copy, ind, df):
+    print(f"Sprawdź podsumowanie bratku czy jest okej."
+          f"\n{gr}{bd}'enter' - okej{eol}"
+          f"\n{gr}{bd}'1' - nie okej{eol}\n")
+    time.sleep(0.5)
+    if (
+        str(input(
+            f"{cn}{bd}ostatni index:{eol} {ind},{cn}{bd} przedmiot:{eol}"
+            f"{df['Przedmiot'][0]}\n\n{df_copy.tail()}\n"
+        ))
+        == "1"
+    ):
+        time.sleep(0.3)
+        return False
+    else:
+        return True

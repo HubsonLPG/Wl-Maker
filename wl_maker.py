@@ -59,43 +59,20 @@ while True:
             )
             df_copy = modules_wl.merge_tallys_into_csv(df, ind)
             df_copy = modules_wl.fill_tally_into_csv(df_copy)
-            print(f"Sprawdź podsumowanie bratku czy jest okej."
-                  f"\n{gr}{bd}'enter' - okej{eol}"
-                  f"\n{gr}{bd}'1' - nie okej{eol}\n")
-            time.sleep(0.5)
-            if (
-                str(input(
-                    f"{cn}{bd}ostatni index:{eol} {ind},{cn}{bd} przedmiot: {eol}"
-                    f"{df['Przedmiot'][0]}\n\n{df_copy.tail()}\n"
-                ))
-                == "1"
-            ):
+            if not modules_wl.summary(df_copy, ind, df):
                 continue
-            else:
-                modules_wl.save_to_csv(file_name, df_copy)
-                break
+            modules_wl.save_to_csv(file_name, df_copy)
+            break
 # --- MENU option 1 ---
 
 # --- MENU option 2 ---
     elif menu_1.lower() == "2":
         while True:
             df_copy = modules_wl.fill_tally_into_csv(df)
-            print(f"Sprawdź podsumowanie bratku czy jest okej."
-                  f"\n{gr}{bd}'enter' - okej{eol}"
-                  f"\n{gr}{bd}'1' - nie okej{eol}\n")
-            time.sleep(0.5)
-            if (
-                str(input(
-                    f"{cn}{bd}ostatni index:{eol} {ind},{cn}{bd} przedmiot:{eol}"
-                    f"{df['Przedmiot'][0]}\n\n{df_copy.tail()}\n"
-                ))
-                == "1"
-            ):
-                time.sleep(0.3)
+            if not modules_wl.summary(df_copy, ind, df):
                 continue
-            else:
-                modules_wl.save_to_csv(file_name, df_copy)
-                break
+            modules_wl.save_to_csv(file_name, df_copy)
+            break
 # --- MENU option 2 ---
 
     else:
