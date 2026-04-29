@@ -44,6 +44,8 @@ def save_to_csv(raw_name, df):
 
 def fill_tally_into_csv(df):
     df_copy = df.copy()
+    df_copy = df_copy.drop_duplicates(
+        subset='e-mail', ignore_index=True)
     teacher_name = unidecode(df_copy['Prowadzący zajęcia, imię'][0].lower())
     teacher_surname = unidecode(
         df_copy['Prowadzący zajęcia, nazwisko'][0].lower())
@@ -139,7 +141,7 @@ def summary(df_copy, ind, df):
     if (
         str(input(
             f"{cn}{bd}ostatni index:{eol} {ind},{cn}{bd} przedmiot:{eol}"
-            f"{df['Przedmiot'][0]}\n\n{df_copy.tail()}\n"
+            f" {df['Przedmiot'][0]}\n\n{df_copy.tail()}\n"
         ))
         == "1"
     ):

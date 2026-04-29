@@ -40,7 +40,6 @@ while True:
     time.sleep(0.3)
     path = path[ind]
     df = pd.read_excel(path)
-    df = df.drop_duplicates(subset='e-mail', ignore_index=True)
     file_name = str(
         f"{df['Tok - nazwa'][0]} {df['Grupa - nazwa'][0]} {(df['Prowadzący zajęcia, imię'][0])[0]}{df['Prowadzący zajęcia, nazwisko'][0]}"
     )
