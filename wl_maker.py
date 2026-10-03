@@ -1,10 +1,11 @@
-import pandas as pd
 import glob
 import os
 import time
-from color import color
-import modules_wl
 
+import pandas as pd
+
+import modules_wl
+from color import color
 
 gr = color.GREEN
 bd = color.BOLD
@@ -31,7 +32,7 @@ while True:
                 f"{bd}{bl}liczba rekordów: {len(df)}{eol} "
                 f"{bd}{pr}{df['Przedmiot'][0]}{eol}\n"
             )
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             print(
                 f'WYSTĄPIŁ BŁĄD W PLIKU {os.path.basename(item)} {e}'
             )

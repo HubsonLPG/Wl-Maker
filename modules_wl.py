@@ -1,9 +1,11 @@
-from color import color
-import pandas as pd
 import glob
 import os
 import time
+
+import pandas as pd
 from unidecode import unidecode
+
+from color import color
 
 gr = color.GREEN
 bd = color.BOLD
@@ -36,7 +38,7 @@ def save_to_csv(raw_name, df):
     file_name = raw_name.replace("/", "_")
     os.makedirs("csvki", exist_ok=True)
     save_path = os.path.join("csvki", f"{file_name}.csv")
-    df.to_csv(save_path, sep=";", index=False)
+    df.to_csv(save_path, sep=";", index=False, header=False)
     print("\nZapisano plik! ♿")
     time.sleep(0.5)
     return file_name
@@ -52,9 +54,9 @@ def fill_tally_into_csv(df):
 
     teacher_mail = str(input(
         f"Wybierz typ maila wykładowcy\n"
-        f"{gr}{bd}'1'{eol} - {teacher_name[0]}{teacher_surname}@wsb.edu.pl\n"
-        f"{gr}{bd}'2'{eol} - {teacher_name}.{teacher_surname}@wsb.edu.pl\n"
-        f"{gr}{bd}Jeśli mail jest niestandardowany, uzupełnij pole: {eol}\n"
+        f"{gr+bd}'1'{eol} - {teacher_name[0]}{teacher_surname}@wsb.edu.pl\n"
+        f"{gr+bd}'2'{eol} - {teacher_name}.{teacher_surname}@wsb.edu.pl\n"
+        f"{gr+bd}Jeśli mail jest niestandardowany, uzupełnij pole: {eol}\n"
     ))
     time.sleep(0.3)
     if teacher_mail.lower() == "1":
@@ -67,13 +69,18 @@ def fill_tally_into_csv(df):
         "Nazwisko": df_copy["Prowadzący zajęcia, nazwisko"][0],
         "e-mail": unidecode(teacher_mail),
     }
+    day_num_1 = int(input(
+        f"Podaj, za ile dni od {bd+gr}{pd.Timestamp.now().normalize():%Y-%m-%d}{eol} mają rozpocząć się laboratoria {bd + gr}(Jeżeli laboratoria zaczynają się w ten sam dzień, wpisz 0){eol}:\n"
+    ))
+    time.sleep(0.3)
     day_num = int(input(
         "Podaj ile mają trwać laboratoria w dniach\n"
     ))
     time.sleep(0.3)
 
     df_copy["Company"] = "AWSB"
-    df_copy["Start Date"] = pd.Timestamp.now().normalize()
+    df_copy["Start Date"] = pd.Timestamp.now().normalize() + \
+        pd.Timedelta(days=day_num_1)
     df_copy["End Date"] = df_copy["Start Date"] + pd.Timedelta(days=day_num)
     df_copy["Timezone ID"] = 54
     df_copy["Trainer"] = False
@@ -120,7 +127,7 @@ def merge_tallys_into_csv(df, ind):
         ind = input("Wybierz indeks ścieżki:\n")
         try:
             ind_list.append(int(ind))
-        except Exception:
+        except Exception:  # noqa: BLE001
             ind_list.append(ind)
         time.sleep(0.3)
         if ind != "":
